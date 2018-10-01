@@ -1,18 +1,23 @@
 import os
 import base64
+import html
+
+s = html.escape( """& < " ' >""" )
 
 from flask import Flask, request
 from model import Message 
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
 
     if request.method == 'POST':
         m = Message(content=request.form['content'])
-        m.content = m.content.replace('>', '&gt')
-        m.content = m.content.replace('<', '&lt')
+        # m.content = m.content.replace('>', '&gt')
+        # m.content = m.content.replace('<', '&lt')
+        m.content = html.escape(m.content)
         m.save()
 
     body = """
