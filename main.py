@@ -11,27 +11,29 @@ def home():
 
     if request.method == 'POST':
         m = Message(content=request.form['content'])
+        m.content = m.content.replace('>', '&gt')
+        m.content = m.content.replace('<', '&lt')
         m.save()
 
     body = """
-<html>
-<body>
-<h1>Class Message Board</h1>
-<h2>Contribute to the Knowledge of Others</h2>
-<form method="POST">
+    <html>
+    <body>
+    <h1>Class Message Board</h1>
+    <h2>Contribute to the Knowledge of Others</h2>
+    <form method="POST">
     <textarea name="content"></textarea>
     <input type="submit" value="Submit">
-</form>
+    </form>
 
-<h2>Wisdom From Your Fellow Classmates</h2>
-"""
+    <h2>Wisdom From Your Fellow Classmates</h2>
+    """
     
     for m in Message.select():
         body += """
-<div class="message">
-{}
-</div>
-""".format(m.content)
+        <div class="message">
+        {}
+        </div>
+        """.format(m.content)
 
     return body 
 
